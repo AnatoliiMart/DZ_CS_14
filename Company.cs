@@ -12,10 +12,11 @@
 
         public int amountOfWorkers { get; private set; }
 
+        public Worker[] workers;
         public DateTime dateOfCreation { get; private set; }
 
         public Company(string CompanyName, string directorName, string CompanyAdress,
-                    string businesProfile, int amountOfWorkers, DateTime dateOfCreation)
+                    string businesProfile, int amountOfWorkers, DateTime dateOfCreation, Worker[] workers )
         {
             this.CompanyName = CompanyName;
             this.directorName = directorName;
@@ -23,6 +24,7 @@
             this.buisnessProfile = businesProfile;
             this.amountOfWorkers = amountOfWorkers;
             this.dateOfCreation = dateOfCreation;
+            this.workers = workers;
         }
         public override string ToString()
         {
@@ -37,10 +39,12 @@
     public class Companies : ICompany
     {
         private List<Company> companies = new List<Company>();
+
         public Companies(List<Company> companies)
         {
             this.companies = companies;
         }
+
         public void CompaniesDirectorWhite()
         {
             var res = from c in companies
@@ -53,10 +57,10 @@
             Console.WriteLine("------------------------------------------------");
         }
 
-        public void CompaniesMoreThan123DaysAgoCreated() // needs be fixed
+        public void CompaniesMoreThan123DaysAgoCreated()
         {
             var res = from item in companies
-                      where (DateTime.Today.Day - item.dateOfCreation.Day) < 123
+                      where (DateTime.Today.Day - item.dateOfCreation.Day) <= 123
                       select item;
             Console.WriteLine("Frims more tham 123 days ago created");
             foreach (var item in res)
@@ -84,6 +88,11 @@
             foreach (var item in res)
                 Console.WriteLine(item.ToString());
             Console.WriteLine("------------------------------------------------");
+        }
+
+        public void GetAllWorkersManagers()
+        {
+            throw new NotImplementedException();
         }
 
         public void GetCompaniesInNameIsFood()
@@ -136,9 +145,80 @@
                       where c.amountOfWorkers > 100
                       select c;
             Console.WriteLine("Companies what have more than 100 workers");
-            foreach (var item in res)
+            foreach (Company item in res)
                 Console.WriteLine(item.ToString());
             Console.WriteLine("------------------------------------------------");
+        }
+
+        public void GetWorkersByCompanyName(string companyName)
+        {
+           var res = from c in companies
+                     where c.CompanyName == companyName
+                     select c.workers;
+
+            Console.WriteLine("All workers of company: " + companyName);
+
+            foreach (Worker[] item in res)
+                ShowWorkers(item);
+            Console.WriteLine("------------------------------------------------");
+        }
+
+        public void GetWorkersByFirmNameAndSalary(string companyName, int salarySize)
+        {
+            var res = from c in companies
+                      where c.CompanyName.Contains(companyName)
+                      select c.workers;
+            foreach (Worker[] item in res)
+            {
+                var res1 = from w in item
+                          where w.Salary >= salarySize
+                          select w;
+                foreach (Worker item1 in res1)
+                    Console.WriteLine(item1.ToString());
+            }
+            Console.WriteLine("------------------------------------------------");
+        }
+
+        public void GetWorkersEMailBeginBy_di_()
+        {
+           IEnumerable<Worker[]>res = from c in companies
+                      select c.workers;
+            foreach (Worker[] item in res)
+            {
+                var res1 = from w in item
+                           where w.EMail.Contains("di")
+                           select w;
+                foreach(Worker item1 in res1)
+                    Console.WriteLine(item1.ToString());
+            }
+        }
+
+        public void GetWorkersName_Lionel()
+        {
+            var res = from c in companies
+                      select c.workers;
+            foreach (Worker[] item in res)
+            {
+                var res1 = from w in item
+                           where w.Name.Contains("Lionel")
+                           select w;
+                foreach (Worker item1 in res1)
+                    Console.WriteLine(item1.ToString());
+            }
+        }
+
+        public void GetWorkersNumberBeginBy23()
+        {
+            var res = from c in companies
+                      select c.workers;
+            foreach (Worker[] item in res)
+            {
+                var res1 = from w in item
+                           where w.Phone.Contains("23")
+                           select w;
+                foreach (Worker item1 in res1)
+                    Console.WriteLine(item1.ToString());
+            }
         }
 
         public void RequestFromHELL()
@@ -159,8 +239,62 @@
                 Console.WriteLine(item.ToString());
             Console.WriteLine("------------------------------------------------");
         }
+
+        private void ShowWorkers(Worker[] workers)
+        {
+            foreach (Worker item in workers)
+            {
+                Console.WriteLine(item.ToString());
+                Console.WriteLine("************************************");
+            }
+            
+        }
     }
-    public interface ICompany
+
+    public class Worker
+    {
+        public string Name     {get; private set;}
+        public string JobTitle { get; private set;}
+        public string Phone    { get; private set;}
+        public string EMail    { get; private set;}
+        public int    Salary   { get; private set;}
+        public Worker()
+        {
+            Name = "noName";
+            JobTitle = "noTitle";
+            Phone = "0000000000000";
+            EMail = "noEMail";
+            Salary = 0;
+        }
+        public Worker(string name, string jobTitle, string phone, string Email, int salary)
+        {
+            Name = name;
+            JobTitle = jobTitle;
+            Phone = phone;
+            EMail = Email;
+            Salary = salary;          
+        }
+        public override string ToString()
+        {
+            return $"Name:\t{Name}\n" +
+                   $"Job title:\t{JobTitle}\n" +
+                   $"Phone:\t{Phone}\n" +
+                   $"EMail:\t{EMail}\n" +
+                   $"Salary:\t{Salary}\n";
+        }
+    }
+    public interface IWorker
+    {
+        //void ShowWorkers(Worker[] workers);
+       
+        void GetWorkersByCompanyName(string companyName);
+        void GetWorkersByFirmNameAndSalary(string companyName ,int salarySize);
+        void GetAllWorkersManagers();
+        void GetWorkersNumberBeginBy23();
+        void GetWorkersEMailBeginBy_di_();
+        void GetWorkersName_Lionel();
+    }
+    public interface ICompany : IWorker
     {
         void ShowAllCompanies();
         void GetCompaniesInNameIsFood();
