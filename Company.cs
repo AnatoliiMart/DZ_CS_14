@@ -92,7 +92,18 @@
 
         public void GetAllWorkersManagers()
         {
-            throw new NotImplementedException();
+            var res = from c in companies
+                      select c.workers;
+            foreach (Worker[] item in res)
+            {
+                var res1 = from c in item
+                           where c.JobTitle.Contains("Manager")
+                           select c;
+                foreach (Worker item1 in res1)
+                {
+                    Console.WriteLine(item1.ToString());
+                }
+            }
         }
 
         public void GetCompaniesInNameIsFood()
@@ -280,7 +291,8 @@
                    $"Job title:\t{JobTitle}\n" +
                    $"Phone:\t{Phone}\n" +
                    $"EMail:\t{EMail}\n" +
-                   $"Salary:\t{Salary}\n";
+                   $"Salary:\t{Salary}\n" +
+                   $"******************************************";
         }
     }
     public interface IWorker
