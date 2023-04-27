@@ -56,7 +56,7 @@
         public void CompaniesMoreThan123DaysAgoCreated() // needs be fixed
         {
             var res = from item in companies
-                      where item.dateOfCreation.Month < (DateTime.Now.Month - 6)
+                      where (DateTime.Today.Day - item.dateOfCreation.Day) < 123
                       select item;
             Console.WriteLine("Frims more tham 123 days ago created");
             foreach (var item in res)
