@@ -97,6 +97,98 @@
                    new()
                } ),
             });
+            bool correct = false;
+            do
+            {
+                Console.WriteLine("Menu\n" +
+                             "1.  Get information about all companies\n" +
+                             "2.  Get companies that have the word \'Food\' in their name\n" +
+                             "3.  Get companies that work in marketing\n" +
+                             "4.  Get companies that work in marketing or IT\n" +
+                             "5.  Get companies with more than 100 employees\n" +
+                             "6.  Get companies with a number of employees ranging from 100 to 300\n" +
+                             "7.  Get companies that are based in \'London\'\n" +
+                             "8.  Get companies with director last name White\n" +
+                             "9.  Get companies that were founded more than two years ago\n" +
+                             "10. Get companies from the date of foundation, which have passed 123 days\n" +
+                             "11. Get companies whose director's last name is \'Black\' and company name contains the word \'White\'\n" +
+                             "12. Get all employees of a particular company\n" +
+                             "13. Get all employees of a particular company who have wages above the target\n" +
+                             "14. Get employees of all companies that have a position manager\n" +
+                             "15. Get employees whose phone number starts with \'23\'\n" +
+                             "16. Get employees whose Email starts with \'di\'\n" +
+                             "17. Get employees whose name is \'Lionel\'");
+                Console.Write("Choose option:\t");
+                int choose = Convert.ToInt32(Console.ReadLine());
+                switch (choose)
+                {
+                    case 1:
+                        companies.ShowAllCompanies();
+                        break;
+                    case 2:
+                        companies.GetCompaniesInNameIsFood();
+                        break;
+                    case 3:
+                        companies.GetMarketingCompanies();
+                        break;
+                    case 4:
+                        companies.GetMarketingAndItCompanies();
+                        break;
+                    case 5:
+                        companies.GetMoreThan100WorkersCompanies();
+                        break;
+                    case 6:
+                        companies.GetFrom100to300WorkersCompanies();
+                        break;
+                    case 7:
+                        companies.CompaniesPlacedInLondon();
+                        break;
+                    case 8:
+                        companies.CompaniesDirectorWhite();
+                        break;
+                    case 9:
+                        companies.CompaniesMoreThanTwoYearsAgoCreated();
+                        break;
+                    case 10:
+                        companies.CompaniesMoreThan123DaysAgoCreated();
+                        break;
+                    case 11:
+                        companies.RequestFromHELL();
+                        break;
+                    case 12:
+                        companies.GetWorkersByCompanyName("Abakaban");
+                        break;
+                    case 13:
+                        companies.GetWorkersByFirmNameAndSalary("Nt-IX", 12000);
+                        break;
+                    case 14:
+                        companies.GetAllWorkersManagers();
+                        break;
+                    case 15:
+                        companies.GetWorkersNumberBeginBy23();
+                        break;
+                    case 16:
+                        companies.GetWorkersEMailBeginBy_di_();
+                        break;
+                    case 17:
+                        companies.GetWorkersName_Lionel();
+                        break;
+                    default:
+                        Console.WriteLine("Wrong input!!! Try again!");
+                        break;
+                }
+                Console.WriteLine("Do you want to continue: y/n");
+                string? s = Console.ReadLine();
+                if (s == "n")
+                    correct = false;
+                else if (s == "y")
+                {
+                    Console.Clear();
+                    correct = true;
+                }
+
+            } while (correct);
+           
         }
     }
 }
